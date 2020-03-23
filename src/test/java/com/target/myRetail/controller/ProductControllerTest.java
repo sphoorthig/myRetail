@@ -2,8 +2,10 @@ package com.target.myRetail.controller;
 
 import com.target.myRetail.models.CurrentPrice;
 import com.target.myRetail.models.ProductResponse;
+import com.target.myRetail.redskyresource.RedSkyTargetClient;
 import com.target.myRetail.service.ProductService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,6 +21,7 @@ class ProductControllerTest {
 
     @MockBean
     ProductService productService;
+
     private int productId = 123456;
 
     @Test

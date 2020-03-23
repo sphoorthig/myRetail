@@ -13,8 +13,8 @@ public class ProductResponse {
     public static ProductResponse transformProductToProductResponse(Product product) {
         return ProductResponse
                 .builder()
-                .id(product.getProductId())
-                .current_price(product.getCurrentPrice())
+                .id(product.get_id())
+                .current_price(product.getCurrent_price())
                 .build();
     }
 }
