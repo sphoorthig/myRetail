@@ -39,7 +39,7 @@ class ProductServiceTest {
                         .build())
                 .build();
 
-        when(productRepository.findBy_id(productId)).thenReturn(productEntity);
+        when(productRepository.findById(productId)).thenReturn(java.util.Optional.ofNullable(productEntity));
         when(redSkyTargetClient.getProductInfoById(productId.toString())).thenReturn(ResponseEntity.ok("{\n" +
                 "   \"product\":{\n" +
                 "      \"item\":{\n" +

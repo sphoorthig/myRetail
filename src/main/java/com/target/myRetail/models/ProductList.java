@@ -3,17 +3,15 @@ package com.target.myRetail.models;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Optional;
-
 @Builder
 @Data
-public class ProductResponse {
+public class ProductList {
     private Integer id;
     private String name;
     private CurrentPrice current_price;
 
-    public static ProductResponse transformProductToProductResponse(Product product) {
-        return ProductResponse
+    public static ProductList transformProductToProductResponse(Product product) {
+        return ProductList
                 .builder()
                 .id(product.get_id())
                 .current_price(product.getCurrent_price())

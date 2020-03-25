@@ -1,6 +1,7 @@
 package com.target.myRetail.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.target.myRetail.models.Product;
 import com.target.myRetail.models.ProductResponse;
@@ -11,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -22,10 +25,13 @@ public class ProductService {
     RedSkyTargetClient redSkyTargetClient;
 
     public ProductResponse getProductById(Integer productId) {
-        Product product = productRepository.findBy_id(productId);
-        ProductResponse productResponse = ProductResponse.transformProductToProductResponse(product);
-        String name = getProductTitle(productId);
-        productResponse.setName(name);
+        Optional<Product> product = productRepository.findById(productId);
+        ProductResponse productResponse = null;
+        if(product.isPresent()) {
+            productResponse = ProductResponse.transformProductToProductResponse(product.get());
+            String name = getProductTitle(productId);
+            productResponse.setName(name);
+        }
         return productResponse;
     }
 
@@ -41,7 +47,7 @@ public class ProductService {
         ResponseEntity<String> productInfoClientResponse = redSkyTargetClient.getProductInfoById(productId.toString());
         HashMap<String, Map> productInfoMap = new HashMap<>();
         try {
-            productInfoMap = new ObjectMapper().readValue(productInfoClientResponse.getBody(), HashMap.class);
+            productInfoMap = new ObjectMapper().readValue(productInfoClientResponse.getBody(), new TypeReference<HashMap<String, Map>>() {});
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
