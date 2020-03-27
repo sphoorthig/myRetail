@@ -1,7 +1,5 @@
 package com.target.myRetail.exception;
 
-import org.springframework.http.HttpStatus;
-
 public class ErrorMessage {
     private String message;
     private int httpStatus;

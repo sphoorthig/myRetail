@@ -1,7 +1,6 @@
 package com.target.myRetail.controller;
 
 import com.target.myRetail.exception.ProductNotFoundException;
-import com.target.myRetail.models.CurrentPrice;
 import com.target.myRetail.models.ProductResponse;
 import com.target.myRetail.service.ProductService;
 import com.target.myRetail.utils.TestUtils;
