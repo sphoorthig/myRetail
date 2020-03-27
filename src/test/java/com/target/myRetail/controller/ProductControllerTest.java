@@ -1,45 +1,49 @@
 package com.target.myRetail.controller;
 
+import com.target.myRetail.exception.ProductNotFoundException;
 import com.target.myRetail.models.CurrentPrice;
 import com.target.myRetail.models.ProductResponse;
-import com.target.myRetail.redskyresource.RedSkyTargetClient;
 import com.target.myRetail.service.ProductService;
+import com.target.myRetail.utils.TestUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 class ProductControllerTest {
-
-    @Autowired
+    private int productId = 123456;
+    @InjectMocks
     ProductController productController;
 
-    @MockBean
+    @Mock
     ProductService productService;
 
-    private int productId = 123456;
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void getProductById_ReturnsProductDetails_forValid() {
-        ProductResponse productResponse = ProductResponse
-                .builder()
-                .id(productId)
-                .name("Test Product Name")
-                .current_price(CurrentPrice
-                        .builder()
-                        .currency_code("USD")
-                        .value(13.46)
-                        .build())
-                .build();
+        ProductResponse productResponse = TestUtils.getMockProductResponse();
         when(productService.getProductById(productId)).thenReturn(productResponse);
-        ProductResponse actualResponse = productController.getProductById(productId);
+        ResponseEntity<ProductResponse> actualResponse = productController.getProductById(productId);
 
-        assertThat(actualResponse).isEqualTo(productResponse);
+        assertThat(actualResponse.getBody()).isEqualTo(productResponse);
+    }
+
+    @Test
+    public void getProductById_ReturnsEmptyResponse_forProductNotFoundInDataStore() {
+        when(productService.getProductById(productId)).thenThrow(new ProductNotFoundException("Product not found"));
+        assertThrows(ProductNotFoundException.class, () -> {
+            productController.getProductById(productId);
+        });
     }
 
 }

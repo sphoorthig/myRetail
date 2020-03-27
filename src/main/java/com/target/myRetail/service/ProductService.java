@@ -3,20 +3,23 @@ package com.target.myRetail.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.target.myRetail.exception.ProductNotFoundException;
 import com.target.myRetail.models.Product;
 import com.target.myRetail.models.ProductResponse;
 import com.target.myRetail.redskyresource.RedSkyTargetClient;
 import com.target.myRetail.repository.ProductRepository;
+import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
@@ -26,32 +29,43 @@ public class ProductService {
 
     public ProductResponse getProductById(Integer productId) {
         Optional<Product> product = productRepository.findById(productId);
-        ProductResponse productResponse = null;
-        if(product.isPresent()) {
+        ProductResponse productResponse = new ProductResponse();
+        if (product.isPresent()) {
             productResponse = ProductResponse.transformProductToProductResponse(product.get());
-            String name = getProductTitle(productId);
-            productResponse.setName(name);
+        } else {
+            throw new ProductNotFoundException("Product not found");
         }
+
+        String name = getProductTitle(productId);
+        productResponse.setName(name);
         return productResponse;
     }
 
     private String getProductTitle(Integer productId) {
-        HashMap<String, Map> productInfoMap = getProductInfoByProductId(productId);
-        Map<String,Map> productMap = productInfoMap.get("product");
-        Map<String,Map> itemMap = productMap.get("item");
-        Map<String,String> prodDescrMap = itemMap.get(("product_description"));
-        return prodDescrMap.get("title");
-    }
-
-    private HashMap<String, Map> getProductInfoByProductId(Integer productId) {
-        ResponseEntity<String> productInfoClientResponse = redSkyTargetClient.getProductInfoById(productId.toString());
+        ResponseEntity<String> productInfoClientResponse;
         HashMap<String, Map> productInfoMap = new HashMap<>();
         try {
-            productInfoMap = new ObjectMapper().readValue(productInfoClientResponse.getBody(), new TypeReference<HashMap<String, Map>>() {});
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            productInfoClientResponse = redSkyTargetClient.getProductInfoById(productId.toString());
+            productInfoMap = new ObjectMapper().readValue(productInfoClientResponse.getBody(), new TypeReference<HashMap<String, Map>>() {
+            });
+            return getProductNameFromMap(productInfoMap);
+        } catch (FeignException | JsonProcessingException ex) {
+            log.error(ex.getMessage());
+            throw new ProductNotFoundException("Product not found");
         }
+    }
 
-        return productInfoMap;
+    private String getProductNameFromMap(HashMap<String, Map> productInfoMap) {
+        Map<String, Map> productMap = productInfoMap.get("product");
+        if (!productInfoMap.isEmpty()) {
+            Map<String, Map> itemMap = productMap.get("item");
+            if (!itemMap.isEmpty()) {
+                Map<String, String> prodDescMap = itemMap.get(("product_description"));
+                if (!prodDescMap.isEmpty()) {
+                    return prodDescMap.get("title");
+                }
+            }
+        }
+        throw new ProductNotFoundException("Product not found");
     }
 }
