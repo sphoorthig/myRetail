@@ -1,21 +1,13 @@
 package com.target.myRetail.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDateTime;
+
 public class ErrorMessage {
     private String message;
-    private int httpStatus;
-
-    public int getHttpStatus() {
-        return httpStatus;
-    }
-
-    public void setHttpStatus(int httpStatus) {
-        this.httpStatus = httpStatus;
-    }
-
-    public ErrorMessage(String message, int httpStatus) {
-        this.message = message;
-        this.httpStatus = httpStatus;
-    }
+    private int status;
+    private String error;
 
     public String getMessage() {
         return message;
@@ -25,4 +17,36 @@ public class ErrorMessage {
         this.message = message;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    private LocalDateTime timestamp;
+
+    public ErrorMessage(String message, int status, String error, LocalDateTime timestamp) {
+        this.message = message;
+        this.status = status;
+        this.error = error;
+        this.timestamp = timestamp;
+    }
 }

@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 class ProductControllerTest {
-    private int productId = 123456;
     @InjectMocks
     ProductController productController;
 
@@ -31,17 +30,17 @@ class ProductControllerTest {
     @Test
     public void getProductById_ReturnsProductDetails_forValid() {
         ProductResponse productResponse = TestUtils.getMockProductResponse();
-        when(productService.getProductById(productId)).thenReturn(productResponse);
-        ResponseEntity<ProductResponse> actualResponse = productController.getProductById(productId);
+        when(productService.getProductById(TestUtils.productId)).thenReturn(productResponse);
+        ResponseEntity<ProductResponse> actualResponse = productController.getProductById(TestUtils.productId);
 
         assertThat(actualResponse.getBody()).isEqualTo(productResponse);
     }
 
     @Test
     public void getProductById_ReturnsEmptyResponse_forProductNotFoundInDataStore() {
-        when(productService.getProductById(productId)).thenThrow(new ProductNotFoundException("Product not found"));
+        when(productService.getProductById(TestUtils.productId)).thenThrow(new ProductNotFoundException("Product not found"));
         assertThrows(ProductNotFoundException.class, () -> {
-            productController.getProductById(productId);
+            productController.getProductById(TestUtils.productId);
         });
     }
 

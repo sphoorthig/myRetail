@@ -5,7 +5,7 @@ import com.target.myRetail.models.Product;
 import com.target.myRetail.models.ProductResponse;
 
 public class TestUtils {
-    private static int productId = 123456;
+    public static int productId = 123456;
 
     public static ProductResponse getMockProductResponse() {
         return ProductResponse

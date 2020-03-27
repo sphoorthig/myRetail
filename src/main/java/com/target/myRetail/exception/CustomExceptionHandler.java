@@ -2,20 +2,49 @@ package com.target.myRetail.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.time.LocalDateTime;
 
 @ControllerAdvice
-public class CustomExceptionHandler {
+public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ErrorMessage> handleException(Exception ex) {
-        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return new ResponseEntity<ErrorMessage>(errorMessage,  HttpStatus.INTERNAL_SERVER_ERROR);
+        HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(),
+                internalServerError.value(),
+                internalServerError.getReasonPhrase(),
+                LocalDateTime.now());
+
+        return new ResponseEntity<>(errorMessage, internalServerError);
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
     public final ResponseEntity<ErrorMessage> handleException(ProductNotFoundException ex) {
-        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(),  HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.NOT_FOUND);
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+
+        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(),
+                notFound.value(),
+                notFound.getReasonPhrase(),
+                LocalDateTime.now());
+
+        return new ResponseEntity<>(errorMessage, notFound);
+    }
+
+    @ExceptionHandler({NumberFormatException.class, MethodArgumentTypeMismatchException.class})
+    public final ResponseEntity<ErrorMessage> handleException(NumberFormatException ex) {
+        HttpStatus notFound = HttpStatus.BAD_REQUEST;
+
+        ErrorMessage errorMessage = new ErrorMessage("Invalid product id in path variable",
+                notFound.value(),
+                notFound.getReasonPhrase(),
+                LocalDateTime.now());
+
+        return new ResponseEntity<>(errorMessage, notFound);
     }
 }
