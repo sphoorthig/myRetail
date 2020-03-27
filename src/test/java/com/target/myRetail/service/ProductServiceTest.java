@@ -1,8 +1,8 @@
 package com.target.myRetail.service;
 
 import com.target.myRetail.exception.ProductNotFoundException;
+import com.target.myRetail.models.ProductEntity;
 import com.target.myRetail.models.Product;
-import com.target.myRetail.models.ProductResponse;
 import com.target.myRetail.redskyresource.RedSkyTargetClient;
 import com.target.myRetail.repository.ProductRepository;
 import com.target.myRetail.utils.TestUtils;
@@ -42,18 +42,18 @@ class ProductServiceTest {
 
     @Test
     public void getProductById_returnsProductInfo() throws IOException {
-        Product productEntity = TestUtils.getMockProductEntity();
+        ProductEntity productEntity = TestUtils.getMockProductEntity();
 
         when(productRepository.findById(productId)).thenReturn(Optional.ofNullable(productEntity));
         when(redSkyTargetClient.getProductInfoById(productId.toString()))
                 .thenReturn(ResponseEntity.ok
                         (FileUtil.readAsString(new File("src/test/java/com/target/myRetail/responses/redskyresponse.json"))));
 
-        ProductResponse productResponse = productService.getProductById(productId);
-        assertThat(productResponse.getId()).isEqualTo(productEntity.get_id());
-        assertThat(productResponse.getCurrent_price().getValue()).isEqualTo(productEntity.getCurrent_price().getValue());
-        assertThat(productResponse.getCurrent_price().getCurrency_code()).isEqualTo(productEntity.getCurrent_price().getCurrency_code());
-        assertThat(productResponse.getName()).isEqualTo("The Big Lebowski (Blu-ray)");
+        Product product = productService.getProductById(productId);
+        assertThat(product.getId()).isEqualTo(productEntity.get_id());
+        assertThat(product.getCurrent_price().getValue()).isEqualTo(productEntity.getCurrent_price().getValue());
+        assertThat(product.getCurrent_price().getCurrency_code()).isEqualTo(productEntity.getCurrent_price().getCurrency_code());
+        assertThat(product.getName()).isEqualTo("The Big Lebowski (Blu-ray)");
     }
 
     @Test
@@ -66,7 +66,7 @@ class ProductServiceTest {
 
     @Test
     public void getProductById_throwsProductNotFoundException_whenRedSkySourceThrows404NotFound() {
-        Product productEntity = TestUtils.getMockProductEntity();
+        ProductEntity productEntity = TestUtils.getMockProductEntity();
         when(productRepository.findById(productId)).thenReturn(java.util.Optional.ofNullable(productEntity));
         when(redSkyTargetClient.getProductInfoById(productId.toString())).thenThrow(FeignException.class);
         assertThrows(ProductNotFoundException.class, () -> {

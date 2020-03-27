@@ -10,7 +10,7 @@ public class ProductList {
     private String name;
     private CurrentPrice current_price;
 
-    public static ProductList transformProductToProductResponse(Product product) {
+    public static ProductList transformProductToProductResponse(ProductEntity product) {
         return ProductList
                 .builder()
                 .id(product.get_id())

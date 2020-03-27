@@ -1,15 +1,24 @@
 package com.target.myRetail.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 
-@Document(collection = "Product")
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
-    @Id
-    private Integer _id;
+    private Integer id;
+    private String name;
     private CurrentPrice current_price;
+
+    public static Product transformProductToProductResponse(ProductEntity product) {
+        return Product
+                .builder()
+                .id(product.get_id())
+                .current_price(product.getCurrent_price())
+                .build();
+    }
 }

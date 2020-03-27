@@ -1,7 +1,7 @@
 package com.target.myRetail.controller;
 
 import com.target.myRetail.exception.ProductNotFoundException;
-import com.target.myRetail.models.ProductResponse;
+import com.target.myRetail.models.Product;
 import com.target.myRetail.service.ProductService;
 import com.target.myRetail.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,11 +29,11 @@ class ProductControllerTest {
 
     @Test
     public void getProductById_ReturnsProductDetails_forValid() {
-        ProductResponse productResponse = TestUtils.getMockProductResponse();
-        when(productService.getProductById(TestUtils.productId)).thenReturn(productResponse);
-        ResponseEntity<ProductResponse> actualResponse = productController.getProductById(TestUtils.productId);
+        Product product = TestUtils.getMockProductResponse();
+        when(productService.getProductById(TestUtils.productId)).thenReturn(product);
+        ResponseEntity<Product> actualResponse = productController.getProductById(TestUtils.productId);
 
-        assertThat(actualResponse.getBody()).isEqualTo(productResponse);
+        assertThat(actualResponse.getBody()).isEqualTo(product);
     }
 
     @Test

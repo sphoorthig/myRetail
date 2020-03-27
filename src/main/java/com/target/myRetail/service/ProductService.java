@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.target.myRetail.exception.ProductNotFoundException;
+import com.target.myRetail.models.ProductEntity;
 import com.target.myRetail.models.Product;
-import com.target.myRetail.models.ProductResponse;
 import com.target.myRetail.redskyresource.RedSkyTargetClient;
 import com.target.myRetail.repository.ProductRepository;
 import feign.FeignException;
@@ -27,11 +27,11 @@ public class ProductService {
     @Autowired
     RedSkyTargetClient redSkyTargetClient;
 
-    public ProductResponse getProductById(Integer productId) {
-        Optional<Product> product = productRepository.findById(productId);
-        ProductResponse productResponse = new ProductResponse();
+    public Product getProductById(Integer productId) {
+        Optional<ProductEntity> product = productRepository.findById(productId);
+        Product productResponse = new Product();
         if (product.isPresent()) {
-            productResponse = ProductResponse.transformProductToProductResponse(product.get());
+            productResponse = Product.transformProductToProductResponse(product.get());
         } else {
             throw new ProductNotFoundException("Product not found");
         }
