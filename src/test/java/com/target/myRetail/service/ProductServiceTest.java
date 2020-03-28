@@ -36,7 +36,6 @@ class ProductServiceTest {
     @Mock
     RedSkyTargetClient redSkyTargetClient;
 
-    private Integer productId = 123456;
 
     @BeforeEach
     public void setUp() {
@@ -47,12 +46,12 @@ class ProductServiceTest {
     public void getProductById_returnsProductInfo() throws IOException {
         ProductEntity productEntity = TestUtils.getMockProductEntity();
 
-        when(productRepository.findById(productId)).thenReturn(Optional.ofNullable(productEntity));
-        when(redSkyTargetClient.getProductInfoById(productId.toString()))
+        when(productRepository.findById(TestUtils.productId)).thenReturn(Optional.ofNullable(productEntity));
+        when(redSkyTargetClient.getProductInfoById(TestUtils.productId.toString()))
                 .thenReturn(ResponseEntity.ok
                         (FileUtil.readAsString(new File("src/test/java/com/target/myRetail/responses/redskyresponse.json"))));
 
-        ProductResponse productResponse = productService.getProductById(productId);
+        ProductResponse productResponse = productService.getProductById(TestUtils.productId);
         assertThat(productResponse.getId()).isEqualTo(productEntity.get_id());
         assertThat(productResponse.getCurrent_price().getValue()).isEqualTo(productEntity.getCurrent_price().getValue());
         assertThat(productResponse.getCurrent_price().getCurrency_code()).isEqualTo(productEntity.getCurrent_price().getCurrency_code());
@@ -63,12 +62,12 @@ class ProductServiceTest {
     public void getProductById_returnsProductInfo_withEmptyResponse_whenRedSkySourceReturnsEmptyTitle() throws IOException {
         ProductEntity productEntity = TestUtils.getMockProductEntity();
 
-        when(productRepository.findById(productId)).thenReturn(Optional.ofNullable(productEntity));
-        when(redSkyTargetClient.getProductInfoById(productId.toString()))
+        when(productRepository.findById(TestUtils.productId)).thenReturn(Optional.ofNullable(productEntity));
+        when(redSkyTargetClient.getProductInfoById(TestUtils.productId.toString()))
                 .thenReturn(ResponseEntity.ok
                         (FileUtil.readAsString(new File("src/test/java/com/target/myRetail/responses/redskyResponseEmptyTitle.json"))));
 
-        ProductResponse productResponse = productService.getProductById(productId);
+        ProductResponse productResponse = productService.getProductById(TestUtils.productId);
         assertThat(productResponse.getId()).isEqualTo(productEntity.get_id());
         assertThat(productResponse.getCurrent_price().getValue()).isEqualTo(productEntity.getCurrent_price().getValue());
         assertThat(productResponse.getCurrent_price().getCurrency_code()).isEqualTo(productEntity.getCurrent_price().getCurrency_code());
@@ -77,23 +76,23 @@ class ProductServiceTest {
 
     @Test
     public void getProductById_throwsProductNotFoundException_whenProductNotFoundInDataBase() throws IOException {
-        when(productRepository.findById(productId)).thenReturn(Optional.empty());
-        when(redSkyTargetClient.getProductInfoById(productId.toString()))
+        when(productRepository.findById(TestUtils.productId)).thenReturn(Optional.empty());
+        when(redSkyTargetClient.getProductInfoById(TestUtils.productId.toString()))
                 .thenReturn(ResponseEntity.ok
                         (FileUtil.readAsString(new File("src/test/java/com/target/myRetail/responses/redskyresponse.json"))));
 
         assertThrows(ProductNotFoundException.class, () -> {
-            productService.getProductById(productId);
+            productService.getProductById(TestUtils.productId);
         });
     }
 
     @Test
     public void getProductById_throwsProductNotFoundException_whenRedSkySourceThrows404NotFound() {
         ProductEntity productEntity = TestUtils.getMockProductEntity();
-        when(productRepository.findById(productId)).thenReturn(java.util.Optional.ofNullable(productEntity));
-        when(redSkyTargetClient.getProductInfoById(productId.toString())).thenThrow(FeignException.class);
+        when(productRepository.findById(TestUtils.productId)).thenReturn(java.util.Optional.ofNullable(productEntity));
+        when(redSkyTargetClient.getProductInfoById(TestUtils.productId.toString())).thenThrow(FeignException.class);
         assertThrows(ProductNotFoundException.class, () -> {
-            productService.getProductById(productId);
+            productService.getProductById(TestUtils.productId);
         });
     }
 
@@ -104,10 +103,10 @@ class ProductServiceTest {
         when(productRepository.findById(any())).thenReturn(Optional.ofNullable(TestUtils.getMockProductEntity()));
         when(productRepository.save(captor.capture())).thenReturn(any());
 
-        productService.updateProduct(updateProductRequest, productId);
+        productService.updateProduct(updateProductRequest, TestUtils.productId);
 
         verify(productRepository).save(any(ProductEntity.class));
-        assertThat(captor.getValue().get_id()).isEqualTo(productId);
+        assertThat(captor.getValue().get_id()).isEqualTo(TestUtils.productId);
         assertThat(captor.getValue().getCurrent_price()).isEqualTo(updateProductRequest.getCurrent_price());
     }
 
@@ -117,8 +116,7 @@ class ProductServiceTest {
         when(productRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThrows(ProductNotFoundException.class, () -> {
-            productService.updateProduct(updateProductRequest, productId);
+            productService.updateProduct(updateProductRequest, TestUtils.productId);
         });
     }
-
 }

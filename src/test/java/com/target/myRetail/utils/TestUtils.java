@@ -8,7 +8,7 @@ import com.target.myRetail.models.UpdateProductRequest;
 import java.util.Optional;
 
 public class TestUtils {
-    public static int productId = 123456;
+    public static Integer productId = 123456;
 
     public static ProductResponse getMockProductResponse() {
         return ProductResponse
@@ -41,6 +41,17 @@ public class TestUtils {
                 .current_price(CurrentPrice
                         .builder()
                         .currency_code("USD")
+                        .value(23.46)
+                        .build())
+                .build();
+    }
+
+    public static UpdateProductRequest getInvalidUpdateProductRequest() {
+        return UpdateProductRequest
+                .builder()
+                .current_price(CurrentPrice
+                        .builder()
+                        .currency_code(null)
                         .value(23.46)
                         .build())
                 .build();
