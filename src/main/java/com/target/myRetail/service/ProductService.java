@@ -5,9 +5,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.target.myRetail.exception.ProductNotFoundException;
 import com.target.myRetail.models.ProductEntity;
-import com.target.myRetail.models.Product;
+import com.target.myRetail.models.ProductResponse;
 import com.target.myRetail.redskyresource.RedSkyTargetClient;
 import com.target.myRetail.repository.ProductRepository;
+import com.target.myRetail.transformers.ProductTransformer;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,11 @@ public class ProductService {
     @Autowired
     RedSkyTargetClient redSkyTargetClient;
 
-    public Product getProductById(Integer productId) {
-        Optional<ProductEntity> product = productRepository.findById(productId);
-        Product productResponse = new Product();
-        if (product.isPresent()) {
-            productResponse = Product.transformProductToProductResponse(product.get());
+    public ProductResponse getProductById(Integer productId) {
+        Optional<ProductEntity> productEntity = productRepository.findById(productId);
+        ProductResponse productResponse = new ProductResponse();
+        if (productEntity.isPresent()) {
+            productResponse = ProductTransformer.transformProductEntityToProductResponse(productEntity.get());
         } else {
             throw new ProductNotFoundException("Product not found");
         }
@@ -67,5 +68,11 @@ public class ProductService {
             }
         }
         throw new ProductNotFoundException("Product not found");
+    }
+
+    public ProductResponse updateProduct(ProductResponse productResponse) {
+//        Optional<ProductEntity> productEntity = productRepository.findById()
+        ProductEntity productEntity = ProductTransformer.transformProductToProductEntity(productResponse);
+        return ProductTransformer.transformProductEntityToProductResponse(productRepository.save(productEntity));
     }
 }

@@ -2,13 +2,13 @@ package com.target.myRetail.utils;
 
 import com.target.myRetail.models.CurrentPrice;
 import com.target.myRetail.models.ProductEntity;
-import com.target.myRetail.models.Product;
+import com.target.myRetail.models.ProductResponse;
 
 public class TestUtils {
     public static int productId = 123456;
 
-    public static Product getMockProductResponse() {
-        return Product
+    public static ProductResponse getMockProductResponse() {
+        return ProductResponse
                 .builder()
                 .id(productId)
                 .name("Test Product Name")

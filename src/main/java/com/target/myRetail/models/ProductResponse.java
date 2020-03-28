@@ -9,16 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class ProductResponse {
     private Integer id;
     private String name;
     private CurrentPrice current_price;
 
-    public static Product transformProductToProductResponse(ProductEntity product) {
-        return Product
-                .builder()
-                .id(product.get_id())
-                .current_price(product.getCurrent_price())
-                .build();
-    }
 }
