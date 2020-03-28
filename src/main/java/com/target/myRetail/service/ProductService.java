@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.target.myRetail.exception.ProductNotFoundException;
 import com.target.myRetail.models.ProductEntity;
 import com.target.myRetail.models.ProductResponse;
+import com.target.myRetail.models.UpdateProductRequest;
 import com.target.myRetail.redskyresource.RedSkyTargetClient;
 import com.target.myRetail.repository.ProductRepository;
 import com.target.myRetail.transformers.ProductTransformer;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,12 +69,17 @@ public class ProductService {
                 }
             }
         }
-        throw new ProductNotFoundException("Product not found");
+        return null;
     }
 
-    public ProductResponse updateProduct(ProductResponse productResponse) {
-//        Optional<ProductEntity> productEntity = productRepository.findById()
-        ProductEntity productEntity = ProductTransformer.transformProductToProductEntity(productResponse);
-        return ProductTransformer.transformProductEntityToProductResponse(productRepository.save(productEntity));
+    public void updateProduct(UpdateProductRequest updateProductRequest, Integer productId) {
+        Optional<ProductEntity> retrieveProductEntity = productRepository.findById(productId);
+
+        if (!retrieveProductEntity.isPresent()) {
+            throw new ProductNotFoundException("Product not found");
+        }
+
+        ProductEntity saveProductEntity = ProductTransformer.transformUpdateProductRequestToProductEntity(updateProductRequest, productId);
+        productRepository.save(saveProductEntity);
     }
 }

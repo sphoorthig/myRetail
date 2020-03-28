@@ -4,9 +4,8 @@ package com.target.myRetail.exception;
 import java.time.LocalDateTime;
 
 public class ErrorMessage {
-    private String message;
     private int status;
-    private String error;
+    private String message;
 
     public String getMessage() {
         return message;
@@ -24,14 +23,6 @@ public class ErrorMessage {
         this.status = status;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -42,10 +33,9 @@ public class ErrorMessage {
 
     private LocalDateTime timestamp;
 
-    public ErrorMessage(String message, int status, String error, LocalDateTime timestamp) {
+    public ErrorMessage(String message, int status, LocalDateTime timestamp) {
         this.message = message;
         this.status = status;
-        this.error = error;
         this.timestamp = timestamp;
     }
 }
