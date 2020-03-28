@@ -3,6 +3,7 @@ package com.target.myRetail.service;
 import com.target.myRetail.exception.ProductNotFoundException;
 import com.target.myRetail.models.ProductEntity;
 import com.target.myRetail.models.ProductResponse;
+import com.target.myRetail.models.UpdateProductRequest;
 import com.target.myRetail.redskyresource.RedSkyTargetClient;
 import com.target.myRetail.repository.ProductRepository;
 import com.target.myRetail.utils.TestUtils;
@@ -10,6 +11,7 @@ import feign.FeignException;
 import org.aspectj.util.FileUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -21,7 +23,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class ProductServiceTest {
     @Mock
@@ -57,7 +60,7 @@ class ProductServiceTest {
     }
 
     @Test
-    public void getProductById_returnsProductInfo_withEmptyResponse() throws IOException {
+    public void getProductById_returnsProductInfo_withEmptyResponse_whenRedSkySourceReturnsEmptyTitle() throws IOException {
         ProductEntity productEntity = TestUtils.getMockProductEntity();
 
         when(productRepository.findById(productId)).thenReturn(Optional.ofNullable(productEntity));
@@ -91,6 +94,30 @@ class ProductServiceTest {
         when(redSkyTargetClient.getProductInfoById(productId.toString())).thenThrow(FeignException.class);
         assertThrows(ProductNotFoundException.class, () -> {
             productService.getProductById(productId);
+        });
+    }
+
+    @Test
+    public void updateProduct_savesTheProductToDB() {
+        UpdateProductRequest updateProductRequest = TestUtils.getUpdateProductRequest();
+        ArgumentCaptor<ProductEntity> captor = ArgumentCaptor.forClass(ProductEntity.class);
+        when(productRepository.findById(any())).thenReturn(Optional.ofNullable(TestUtils.getMockProductEntity()));
+        when(productRepository.save(captor.capture())).thenReturn(any());
+
+        productService.updateProduct(updateProductRequest, productId);
+
+        verify(productRepository).save(any(ProductEntity.class));
+        assertThat(captor.getValue().get_id()).isEqualTo(productId);
+        assertThat(captor.getValue().getCurrent_price()).isEqualTo(updateProductRequest.getCurrent_price());
+    }
+
+    @Test
+    public void updateProduct_throwsProductNotFoundException_whenProductDoesNotExistInDB() {
+        UpdateProductRequest updateProductRequest = TestUtils.getUpdateProductRequest();
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(ProductNotFoundException.class, () -> {
+            productService.updateProduct(updateProductRequest, productId);
         });
     }
 
