@@ -32,14 +32,12 @@ public class ProductService {
 
     public ProductResponse getProductById(Integer productId) {
         Optional<ProductEntity> productEntity = productRepository.findById(productId);
-        ProductResponse productResponse = new ProductResponse();
-        if (productEntity.isPresent()) {
-            productResponse = ProductTransformer.transformProductEntityToProductResponse(productEntity.get());
-        } else {
+        String name = getProductTitle(productId);
+
+        if (!productEntity.isPresent() || name == null) {
             throw new ProductNotFoundException("Product not found");
         }
-
-        String name = getProductTitle(productId);
+        ProductResponse productResponse = ProductTransformer.transformProductEntityToProductResponse(productEntity.get());
         productResponse.setName(name);
         return productResponse;
     }
@@ -54,7 +52,7 @@ public class ProductService {
             return getProductNameFromMap(productInfoMap);
         } catch (FeignException | JsonProcessingException ex) {
             log.error(ex.getMessage());
-            throw new ProductNotFoundException("Product not found");
+            return null;
         }
     }
 
