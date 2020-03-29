@@ -41,7 +41,7 @@ https://myretailtarget.herokuapp.com/swagger-ui.html
 
 ## Testing the application in postman
 1. Download the postman at https://www.postman.com/downloads/
-2. Download the collection (<a href="https://raw.githubusercontent.com/sphoorthig/myRetail/master/PostmanCollection/myRetailPostman.json">Click here to download postman collection</a>)
+2. Download the collection (<a href="https://raw.githubusercontent.com/sphoorthig/myRetail/master/PostmanCollection/myRetailPostman.json" download="myRetailPostman.json">Click here to download postman collection</a>)
 3. Import the downloaded collection to postman
 
 #### Test application on a local instance 
