@@ -36,9 +36,16 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	implementation 'junit:junit:4.12'
+	testCompile 'junit:junit:4.12'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 test {
 	useJUnitPlatform()
+}
+tasks.withType(Test) {
+	testLogging {
+		exceptionFormat "full"
+		events "passed", "failed"
+	}
 }

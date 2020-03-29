@@ -1,0 +1,1077 @@
+{
+	"info": {
+		"_postman_id": "fb482db9-9c86-445b-88f4-4dd867d64582",
+		"name": "My Retail",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "Get by product id - HappyPath",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "22e7101b-1f87-49de-86d5-a429913d7e67",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Body contains name\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"The Big Lebowski (Blu-ray)\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/products/13860428",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"13860428"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by product id - Pathvariable validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6d714e64-6898-4516-9e17-b2f201560286",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code has string\", function () {",
+									"pm.test(\"Body contains string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid product id in path variable\");",
+									"});",
+									"    pm.response.to.have.status(\"Bad Request\");",
+									"});",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/products/gfghftyfdjytftfvuygyu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"gfghftyfdjytftfvuygyu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by product id - Not found in DB",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe806e70-362b-4b91-ad87-50a53c6c3d09",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code has not found string\", function () {",
+									"    pm.response.to.have.status(\"Not Found\");",
+									"});",
+									"});",
+									"pm.test(\"Body contains not found error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Product not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/products/1386042",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"1386042"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by product id - Not found in RedSky",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "32abed22-3321-470e-8931-50cd15a90548",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code has not found string\", function () {",
+									"    pm.response.to.have.status(\"Not Found\");",
+									"});",
+									"});",
+									"pm.test(\"Body contains not found error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Product not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/products/15117729",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"15117729"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by product id - HappyPath",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8c08d8e6-a6c3-4eb3-90cd-286cda176a82",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Body contains name\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Product updated successfully\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_price\": {\n        \"value\": 13.78,\n        \"currency_code\": \"USD\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/13860428",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"13860428"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by product id - Pathvariable validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b8c5eabd-3763-46b5-9118-08ab0500939e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code has string\", function () {",
+									"pm.test(\"Body contains string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid product id in path variable\");",
+									"});",
+									"    pm.response.to.have.status(\"Bad Request\");",
+									"});",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_price\": {\n        \"value\": 13.78,\n        \"currency_code\": null\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/13860428138604281386042813860428",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"13860428138604281386042813860428"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by product id - Not Found in DB",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ee29800-1204-4ae2-97fc-e27e8d434d24",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code has not found string\", function () {",
+									"    pm.response.to.have.status(\"Not Found\");",
+									"});",
+									"});",
+									"pm.test(\"Body contains not found error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Product not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_price\": {\n        \"value\": 13.78,\n        \"currency_code\": \"USD\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/1386042",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"1386042"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by product id - Invalid Request Body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bc7a5802-9861-41ba-911f-8a6d42cd88c1",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code has string\", function () {",
+									"pm.test(\"Body contains string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Update Request Not Valid - Currency code and Currency value must be provided\");",
+									"});",
+									"    pm.response.to.have.status(\"Bad Request\");",
+									"});",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_price\": {\n        \"value\": 13.78,\n        \"currency_code\": null\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/13860428",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"13860428"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Heroku",
+			"item": [
+				{
+					"name": "Get by product id - HappyPath",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2083a1ba-b079-4366-843e-9e4aaec00e76",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Body contains name\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"The Big Lebowski (Blu-ray)\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://myretailtarget.herokuapp.com/api/products/13860428",
+							"protocol": "https",
+							"host": [
+								"myretailtarget",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"products",
+								"13860428"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by product id - Pathvariable validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "648f4b51-e337-4c90-b549-cf91d356399a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code has string\", function () {",
+									"pm.test(\"Body contains string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid product id in path variable\");",
+									"});",
+									"    pm.response.to.have.status(\"Bad Request\");",
+									"});",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://myretailtarget.herokuapp.com/api/products/gfghftyfdjytftfvuygyu",
+							"protocol": "https",
+							"host": [
+								"myretailtarget",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"products",
+								"gfghftyfdjytftfvuygyu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by product id - Not found in DB",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e7e81152-08b4-4e8d-b93a-4fd870da9e71",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code has not found string\", function () {",
+									"    pm.response.to.have.status(\"Not Found\");",
+									"});",
+									"});",
+									"pm.test(\"Body contains not found error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Product not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://myretailtarget.herokuapp.com/api/products/1386042",
+							"protocol": "https",
+							"host": [
+								"myretailtarget",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"products",
+								"1386042"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by product id - Not found in RedSky",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fc9e85b8-a83c-4a81-b3db-741d40d34019",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code has not found string\", function () {",
+									"    pm.response.to.have.status(\"Not Found\");",
+									"});",
+									"});",
+									"pm.test(\"Body contains not found error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Product not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://myretailtarget.herokuapp.com/api/products/15117729",
+							"protocol": "https",
+							"host": [
+								"myretailtarget",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"products",
+								"15117729"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by product id - HappyPath",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e53b454c-ce2d-4f8b-af67-721b6adaed7f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Body contains name\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Product updated successfully\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_price\": {\n        \"value\": 13.78,\n        \"currency_code\": \"USD\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://myretailtarget.herokuapp.com/api/products/13860428",
+							"protocol": "https",
+							"host": [
+								"myretailtarget",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"products",
+								"13860428"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by product id - Pathvariable validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "72a7e091-238f-40f8-92ee-13308dd79146",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code has string\", function () {",
+									"pm.test(\"Body contains string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid product id in path variable\");",
+									"});",
+									"    pm.response.to.have.status(\"Bad Request\");",
+									"});",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_price\": {\n        \"value\": 13.78,\n        \"currency_code\": null\n    }\n}"
+						},
+						"url": {
+							"raw": "https://myretailtarget.herokuapp.com/api/products/13860428138604281386042813860428",
+							"protocol": "https",
+							"host": [
+								"myretailtarget",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"products",
+								"13860428138604281386042813860428"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by product id - Not Found in DB",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "91153783-697a-487c-bc7f-d3620dd5615b",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code has not found string\", function () {",
+									"    pm.response.to.have.status(\"Not Found\");",
+									"});",
+									"});",
+									"pm.test(\"Body contains not found error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Product not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_price\": {\n        \"value\": 13.78,\n        \"currency_code\": \"USD\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://myretailtarget.herokuapp.com/api/products/1386042",
+							"protocol": "https",
+							"host": [
+								"myretailtarget",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"products",
+								"1386042"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by product id - Invalid Request Body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2cd5d194-a72d-4132-8d24-d702e41f387a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code has string\", function () {",
+									"pm.test(\"Body contains string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Update Request Not Valid - Currency code and Currency value must be provided\");",
+									"});",
+									"    pm.response.to.have.status(\"Bad Request\");",
+									"});",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_price\": {\n        \"value\": 13.78,\n        \"currency_code\": null\n    }\n}"
+						},
+						"url": {
+							"raw": "https://myretailtarget.herokuapp.com/api/products/13860428",
+							"protocol": "https",
+							"host": [
+								"myretailtarget",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"products",
+								"13860428"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "RedSky Target Source",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://redsky.target.com/v2/pdp/tcin/16483589?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics",
+					"protocol": "https",
+					"host": [
+						"redsky",
+						"target",
+						"com"
+					],
+					"path": [
+						"v2",
+						"pdp",
+						"tcin",
+						"16483589"
+					],
+					"query": [
+						{
+							"key": "excludes",
+							"value": "taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
