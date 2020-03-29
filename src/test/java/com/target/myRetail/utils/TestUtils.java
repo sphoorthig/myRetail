@@ -5,8 +5,6 @@ import com.target.myRetail.models.ProductEntity;
 import com.target.myRetail.models.ProductResponse;
 import com.target.myRetail.models.UpdateProductRequest;
 
-import java.util.Optional;
-
 public class TestUtils {
     public static Integer productId = 123456;
 
