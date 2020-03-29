@@ -57,11 +57,11 @@ public class ProductService {
 
     private String getProductNameFromMap(HashMap<String, Map> productInfoMap) {
         Map<String, Map> productMap = productInfoMap.get("product");
-        if (!productInfoMap.isEmpty()) {
+        if (productInfoMap != null && !productInfoMap.isEmpty()) {
             Map<String, Map> itemMap = productMap.get("item");
-            if (!itemMap.isEmpty()) {
+            if (itemMap != null && !itemMap.isEmpty()) {
                 Map<String, String> prodDescMap = itemMap.get(("product_description"));
-                if (!prodDescMap.isEmpty()) {
+                if (prodDescMap != null && !prodDescMap.isEmpty()) {
                     return prodDescMap.get("title");
                 }
             }
