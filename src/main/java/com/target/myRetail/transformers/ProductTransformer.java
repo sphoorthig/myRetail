@@ -7,8 +7,6 @@ import com.target.myRetail.models.UpdateProductRequest;
 
 public class ProductTransformer {
 
-    public static final String DEFAULT_CURRENCY_CODE = "USD";
-
     public static ProductResponse transformProductEntityToProductResponse(ProductEntity productEntity) {
         return ProductResponse
                 .builder()
