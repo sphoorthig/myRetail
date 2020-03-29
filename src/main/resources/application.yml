@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://dbUser:noisyfire253@retailproduct-shard-00-00-2ltwp.mongodb.net:27017,retailproduct-shard-00-01-2ltwp.mongodb.net:27017,retailproduct-shard-00-02-2ltwp.mongodb.net:27017/retailproduct?ssl=true&replicaSet=retailproduct-shard-0&authSource=admin&retryWrites=true&w=majority
+      database: retailproduct

@@ -15,10 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,10 +44,9 @@ public class ProductService {
 
     private String getProductTitle(Integer productId) {
         ResponseEntity<String> productInfoClientResponse;
-        HashMap<String, Map> productInfoMap = new HashMap<>();
         try {
             productInfoClientResponse = redSkyTargetClient.getProductInfoById(productId.toString());
-            productInfoMap = new ObjectMapper().readValue(productInfoClientResponse.getBody(), new TypeReference<HashMap<String, Map>>() {
+            HashMap<String, Map> productInfoMap = new ObjectMapper().readValue(Objects.requireNonNull(productInfoClientResponse.getBody()), new TypeReference<HashMap<String, Map>>() {
             });
             return getProductNameFromMap(productInfoMap);
         } catch (FeignException | JsonProcessingException ex) {
