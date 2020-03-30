@@ -31,9 +31,11 @@ To bootRun the application locally run the below command in the terminal
 ```gradle bootRun```
 The application will start in port 8080
 
-The application has been secured with admin/password as credentials. 
+
 
 ## Deployed instance
+The application has been secured with admin/password as credentials as basic auth.
+
 The application can be tested on deployed instance of heroku.
 ```https://myretailtarget.herokuapp.com```
 
