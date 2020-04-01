@@ -31,15 +31,26 @@ public class ProductService {
     RedSkyTargetClient redSkyTargetClient;
 
     public ProductResponse getProductById(Integer productId) {
-        Optional<ProductEntity> productEntity = productRepository.findById(productId);
+        ProductEntity productEntity = getProductFromRepository(productId);
         String name = getProductTitle(productId);
 
-        if (!productEntity.isPresent() || name == null) {
+        if (name == null) {
             throw new ProductNotFoundException("Product not found");
         }
-        ProductResponse productResponse = ProductTransformer.transformProductEntityToProductResponse(productEntity.get());
+        ProductResponse productResponse = ProductTransformer.transformProductEntityToProductResponse(productEntity);
         productResponse.setName(name);
         return productResponse;
+    }
+
+    private ProductEntity getProductFromRepository(Integer productId) {
+        Optional<ProductEntity> productEntity = productRepository.findById(productId);
+
+        if(!productEntity.isPresent()) {
+            throw new ProductNotFoundException("Product not found");
+        }
+
+        return productEntity.get();
+
     }
 
     private String getProductTitle(Integer productId) {
@@ -70,11 +81,7 @@ public class ProductService {
     }
 
     public void updateProduct(UpdateProductRequest updateProductRequest, Integer productId) {
-        Optional<ProductEntity> retrieveProductEntity = productRepository.findById(productId);
-
-        if (!retrieveProductEntity.isPresent()) {
-            throw new ProductNotFoundException("Product not found");
-        }
+        getProductFromRepository(productId);
 
         ProductEntity saveProductEntity = ProductTransformer.transformUpdateProductRequestToProductEntity(updateProductRequest, productId);
         productRepository.save(saveProductEntity);

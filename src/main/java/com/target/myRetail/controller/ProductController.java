@@ -46,9 +46,9 @@ public class ProductController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UpdateSuccessResponse> updateProductById(@PathVariable(value = "id") Integer id,
                                                                    @RequestBody UpdateProductRequest updateProductRequest) {
-        if(StringUtils.isEmpty(updateProductRequest.getCurrent_price().getCurrency_code()) || updateProductRequest.getCurrent_price().getValue() == null){
-            throw new UpdateRequestNotValidException("Update Request Not Valid - Currency code and Currency value must be provided");
-        }
+           if (updateProductRequest.getCurrent_price() == null || StringUtils.isEmpty(updateProductRequest.getCurrent_price().getCurrency_code()) || updateProductRequest.getCurrent_price().getValue() == null) {
+               throw new UpdateRequestNotValidException("Update Request Not Valid - Currency code and Currency value must be provided");
+           }
         productService.updateProduct(updateProductRequest, id);
         return ResponseEntity.ok().body(new UpdateSuccessResponse(HttpStatus.OK.value(), "Product updated successfully"));
     }
