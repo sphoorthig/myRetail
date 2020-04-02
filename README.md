@@ -29,19 +29,11 @@ To run the tests in the terminal run the below command in the terminal
 
 To bootRun the application locally run the below command in the terminal
 ```gradle bootRun```
-The application will start in port 8080
-
-
-
-## Deployed instance
-The application has been secured with admin/password as credentials as basic auth.
-
-The application can be tested on deployed instance of heroku.
-```https://myretailtarget.herokuapp.com```
+The default application will start in port 8080
 
 ## Swagger documentation
 Find the swagger at
-https://myretailtarget.herokuapp.com/swagger-ui.html
+https://localhost:8080/swagger-ui.html
 
 ## Testing the application in postman
 1. Download the postman at https://www.postman.com/downloads/
@@ -50,7 +42,3 @@ https://myretailtarget.herokuapp.com/swagger-ui.html
 #### Test application on a local instance 
 1. BootRun the spring boot application 
 3. Run the myRetail postman collection as a runner from local folder. (Tests included in postman requests)
-
-#### Test application on a local instance 
-To test application using postman on a Heroku deployed instance 
-1. Run the myRetail postman collection as a runner from Heroku folder. (Tests included in postman requests)
